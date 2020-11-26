@@ -25,5 +25,13 @@ export class AppComponent implements OnInit {
     this.breadcrumbService.breadcrumbChanged.subscribe((breadcrumb: any) => {
       this.breadcrumbItems = breadcrumb;
     });
+
+    this.breadcrumbItems = [];
+  }
+
+  itemClicked(event: { item: { routerLink: string } }) {
+    if (event.item.routerLink === '/') {
+      this.breadcrumbItems = [];
+    }
   }
 }

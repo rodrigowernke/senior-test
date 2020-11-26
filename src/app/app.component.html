@@ -1,5 +1,15 @@
-<p-breadcrumb [model]="breadcrumbItems" [home]="home"></p-breadcrumb>
-<p-menu [model]="menuItems"></p-menu>
+<div class="p-d-flex">
+  <aside class="sidebar">
+    <p-menu [model]="menuItems" [popup]="false"></p-menu>
+  </aside>
+  <div class="navbar">
+    <p-breadcrumb
+      [model]="breadcrumbItems"
+      [home]="home"
+      (onItemClick)="itemClicked($event)"
+    ></p-breadcrumb>
+  </div>
+</div>
 <main>
   <router-outlet></router-outlet>
 </main>

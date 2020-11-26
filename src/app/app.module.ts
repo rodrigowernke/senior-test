@@ -19,7 +19,12 @@ import { TableModule } from 'primeng/table';
 import { RemoveComponent } from './item/remove/remove/remove.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, ListComponent, RemoveComponent],
+  declarations: [
+    AppComponent,
+    RegisterComponent,
+    ListComponent,
+    RemoveComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -1,37 +1,48 @@
-<form>
-    <div class="p-fluid" style="width:300px">
-        <div class="p-field">
-            <label for="name">Nome</label>
-            <input id="name" type="text" pInputText> 
-        </div>
-        <div class="p-field">
-            <label for="measurementUnit">Unidade</label>
-            <p-dropdown id="measurementUnit" [options]="measurementUnits" optionLabel="name"></p-dropdown>
-        </div>
-        <div class="p-field">
-            <label for="quantity">Quantidade</label>
-            <input id="quantity" type="text" pInputText> 
-        </div>
-        <div class="p-field">
-            <label for="price">Preço</label>
-            <input id="price" type="text" pInputText> 
-        </div>
-        <div class="p-field p-d-flex p-flex-row p-ai-center">
-            <label class="p-mr-2">Produto Perecível</label>
-            <p-inputSwitch formControlName="enabled"></p-inputSwitch>
-        </div>
-        <div class="p-field">
-            <label for="expirationDate">Data de validade</label>
-            <input id="expirationDate" placeholder="" type="date" pInputText> 
-        </div>
-        <div class="p-field">
-            <label for="manufacturingDate">Data de fabricação</label>
-            <input id="manufacturingDate" type="date" pInputText> 
-        </div>
+<div>
+  <form>
+    <div class="p-fluid" style="width: 300px; margin: 0 auto">
+      <div class="p-field">
+        <label for="name">Nome</label>
+        <input id="name" type="text" pInputText />
+      </div>
+      <div class="p-field">
+        <label for="measurementUnit">Unidade</label>
+        <p-dropdown
+          id="measurementUnit"
+          [options]="measurementUnits"
+          optionLabel="name"
+        ></p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="quantity">Quantidade</label>
+        <input id="quantity" type="text" pInputText />
+      </div>
+      <div class="p-field">
+        <label for="price">Preço</label>
+        <input id="price" type="text" pInputText />
+      </div>
+      <div class="p-field p-d-flex p-flex-row p-ai-center">
+        <label class="p-mr-2">Produto Perecível</label>
+        <p-inputSwitch formControlName="enabled"></p-inputSwitch>
+      </div>
+      <div class="p-field">
+        <label for="expirationDate">Data de validade</label>
+        <input id="expirationDate" placeholder="" type="date" pInputText />
+      </div>
+      <div class="p-field">
+        <label for="manufacturingDate">Data de fabricação</label>
+        <input id="manufacturingDate" type="date" pInputText />
+      </div>
     </div>
-    <div class="p-d-flex">
-        <button pButton type="button" class="p-mr-2" label="Salvar"></button>
-        <button pButton type="button" class="p-button-text p-button-raised p-button-danger" label="Cancelar" (click)="cancelForm()"></button>
+    <div class="p-d-flex" style="width: 300px; margin: 0 auto">
+      <button pButton type="button" class="p-mr-2" label="Salvar"></button>
+      <button
+        pButton
+        type="button"
+        class="p-button-text p-button-raised p-button-danger"
+        label="Cancelar"
+        (click)="cancelForm()"
+      ></button>
     </div>
-</form>
-
+  </form>
+</div>
