@@ -1,0 +1,7 @@
+<div class="card p-shadow-3">
+    <p>Você tem certeza que deseja deletar o item {{ item.name }} ?</p>
+    <div class="p-d-flex p-jc-center">
+        <button pButton type="button" class="p-button-text p-button-raised p-button-danger p-mr-2" label="Remover" (click)="removeItem()"></button>
+        <button pButton type="button" class="p-button-text p-button-raised" label="Cancelar" (click)="cancel()"></button>
+    </div>
+</div>

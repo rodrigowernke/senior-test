@@ -16,6 +16,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   items: Item[] = [];
 
+  removeItem!: Item;
+  showRemoveItemModal: boolean = false;
+
   private itemsSubscription!: Subscription;
 
   constructor(
@@ -44,7 +47,14 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemsSubscription.unsubscribe();
   }
 
-  deleteItem(item: Item) {}
+  hideRemoveModal(showRemoveItemModal: boolean) {
+    this.showRemoveItemModal = showRemoveItemModal;
+  }
+
+  deleteItem(item: Item) {
+    this.removeItem = item;
+    this.showRemoveItemModal = true;
+  }
 
   editItem(item: Item) {
     this.router.navigate(['/register'], { state: item });

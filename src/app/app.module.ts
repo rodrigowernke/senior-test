@@ -16,9 +16,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ItemService } from './item/item.service';
 import { TableModule } from 'primeng/table';
+import { RemoveComponent } from './item/remove/remove/remove.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, ListComponent],
+  declarations: [AppComponent, RegisterComponent, ListComponent, RemoveComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

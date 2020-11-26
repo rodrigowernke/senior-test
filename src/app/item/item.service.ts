@@ -17,15 +17,18 @@ export class ItemService {
 
     items.push(item);
     localStorage.setItem('items', JSON.stringify(items));
+
+    this.itemsSubject.next(this.getItems());
   }
 
   deleteItem(item: Item) {
     let items: Item[] = JSON.parse(localStorage.getItem('items') || '{}');
 
-    let deletedItem = items.find((x) => x.name === item.name);
+    let itemIndex = items.findIndex((x) => x.name === item.name);
 
-    if (!deletedItem) {
-      //problema
-    }
+    items.splice(itemIndex, 1);
+    localStorage.setItem('items', JSON.stringify(items));
+
+    this.itemsSubject.next(this.getItems());
   }
 }
