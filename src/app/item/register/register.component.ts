@@ -91,7 +91,7 @@ export class RegisterComponent implements OnInit {
       ),
     });
 
-    this.quantityAbreviation = 'kg';
+    this.quantityAbreviation = 'lt';
 
     this.registerForm.valueChanges.subscribe((change) => {
       const measurementUnit =
