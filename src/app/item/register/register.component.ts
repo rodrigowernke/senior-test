@@ -76,10 +76,12 @@ export class RegisterComponent implements OnInit {
         this.editableItem ? this.editableItem.quantity : '',
         [this.validatorQuantity as ValidatorFn]
       ),
-      price: new FormControl(this.editableItem ? this.editableItem.price : ''),
+      price: new FormControl(this.editableItem ? this.editableItem.price : '', [
+        Validators.required,
+      ]),
       perishable: new FormControl(
         this.editableItem ? this.editableItem.perishable : false,
-        Validators.required
+        [Validators.required]
       ),
       expirationDate: new FormControl(
         this.editableItem ? this.editableItem.expirationDate : '',
@@ -230,12 +232,12 @@ export class RegisterComponent implements OnInit {
 
       if (this.editableItem) {
         this.itemService.editItem(item);
-        console.log('Edited an item!');
       } else {
         this.itemService.addItem(item);
-        console.log('Added a new item!');
       }
     }
+
+    // debug
   }
 
   cancelForm() {

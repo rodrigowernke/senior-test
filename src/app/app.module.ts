@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +24,8 @@ import { SidebarModule } from 'primeng/sidebar';
 
 import { ItemService } from './item/item.service';
 import { RemoveComponent } from './item/remove/remove/remove.component';
+
+registerLocaleData(localePt, 'pt');
 
 @NgModule({
   declarations: [
@@ -44,7 +49,12 @@ import { RemoveComponent } from './item/remove/remove/remove.component';
     TableModule,
     SidebarModule,
   ],
-  providers: [BreadcrumbService, ItemService],
+  providers: [
+    BreadcrumbService,
+    ItemService,
+    { provide: LOCALE_ID, useValue: 'pt' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

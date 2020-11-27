@@ -7,8 +7,28 @@
 }
 
 .ng-invalid.ng-touched {
-  input {
-    border-color: red;
+  border-color: red;
+}
+
+:host ::ng-deep {
+  .ng-touched.ng-invalid {
+    .p-inputmask.p-inputtext.p-component {
+      border-color: red;
+    }
+
+    .p-inputmask.p-inputtext.p-component.p-filled {
+      border-color: #ced4da;
+    }
+  }
+
+  .ng-untouched.ng-invalid {
+    .p-inputmask.p-inputtext.p-component {
+      border-color: #ced4da !important;
+    }
+  }
+
+  .ng-valid {
+    border-color: #ced4da;
   }
 }
 

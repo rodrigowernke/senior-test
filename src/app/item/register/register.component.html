@@ -41,10 +41,24 @@
       <div class="p-field">
         <label for="price">Preço</label>
         <input id="price" formControlName="price" pInputText />
+        <div *ngIf="isInvalidControl('price')">
+          <span
+            class="error"
+            *ngIf="registerForm.controls['price'].errors!['required']"
+            >Campo obrigatório.</span
+          >
+        </div>
       </div>
       <div class="p-field p-d-flex p-flex-row p-ai-center">
         <label class="p-mt-2 p-mr-2">Produto Perecível</label>
         <p-checkbox formControlName="perishable" [binary]="true"></p-checkbox>
+        <div *ngIf="isInvalidControl('perishable')">
+          <span
+            class="error"
+            *ngIf="registerForm.controls['perishable'].errors!['required']"
+            >Campo obrigatório.</span
+          >
+        </div>
       </div>
       <div class="p-field">
         <label for="expirationDate">Data de validade</label>
@@ -53,6 +67,7 @@
           formControlName="expirationDate"
           mask="99/99/9999"
           slotChar=""
+          [autoClear]="false"
         ></p-inputMask>
         <div *ngIf="isInvalidControl('expirationDate')">
           <span
@@ -78,6 +93,7 @@
           formControlName="manufacturingDate"
           mask="99/99/9999"
           slotChar=""
+          [autoClear]="false"
         ></p-inputMask>
         <div *ngIf="isInvalidControl('manufacturingDate')">
           <span

@@ -1,3 +1,9 @@
 main {
   padding: 1em;
 }
+
+:host ::ng-deep {
+  .p-breadcrumb {
+    padding: 0.5rem;
+  }
+}
