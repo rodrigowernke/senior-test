@@ -17,6 +17,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { InputMaskModule } from 'primeng/inputmask';
+import { SidebarModule } from 'primeng/sidebar';
 
 import { ItemService } from './item/item.service';
 import { RemoveComponent } from './item/remove/remove/remove.component';
@@ -41,6 +42,7 @@ import { RemoveComponent } from './item/remove/remove/remove.component';
     CheckboxModule,
     InputMaskModule,
     TableModule,
+    SidebarModule,
   ],
   providers: [BreadcrumbService, ItemService],
   bootstrap: [AppComponent],

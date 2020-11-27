@@ -1,6 +1,6 @@
-<div class="p-shadow-9">
+<div class="p-shadow-9 p-p-5 rounded">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="p-fluid" style="width: 300px; margin: 0 auto">
+    <div class="p-fluid">
       <div class="p-field">
         <label for="name">Nome</label>
         <input id="name" type="text" formControlName="name" pInputText />
@@ -99,8 +99,8 @@
         </div>
       </div>
     </div>
-    <div class="p-d-flex" style="width: 300px; margin: 0 auto">
-      <button pButton type="submit" class="p-mr-2" label="Salvar"></button>
+    <div class="p-d-flex p-jc-center">
+      <button pButton type="submit" class="p-mr-6" label="Salvar"></button>
       <button
         pButton
         type="button"

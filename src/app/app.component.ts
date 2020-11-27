@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   breadcrumbItems!: MenuItem[];
   menuItems!: MenuItem[];
   home!: MenuItem;
+  display: boolean = false;
 
   constructor(private breadcrumbService: BreadcrumbService) {}
 

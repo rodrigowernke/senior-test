@@ -1,3 +1,17 @@
 .error {
   color: red;
 }
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.ng-invalid.ng-touched {
+  input {
+    border-color: red;
+  }
+}
+
+.border-error {
+  border-color: red;
+}

@@ -1,8 +1,11 @@
-<div class="p-d-flex">
-  <aside class="sidebar">
-    <p-menu [model]="menuItems" [popup]="false"></p-menu>
-  </aside>
-  <div class="navbar">
+<div class="p-d-flex p-flex-nowrap p-jc-between">
+  <div class="p-p-2">
+    <p-sidebar [(visible)]="display">
+      <p-menu [model]="menuItems" [popup]="false"></p-menu>
+    </p-sidebar>
+    <p-button type="text" (click)="display = true" icon="pi pi-bars"></p-button>
+  </div>
+  <div class="p-p-2">
     <p-breadcrumb
       [model]="breadcrumbItems"
       [home]="home"
@@ -10,6 +13,4 @@
     ></p-breadcrumb>
   </div>
 </div>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<main><router-outlet></router-outlet></main>
