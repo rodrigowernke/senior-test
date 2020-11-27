@@ -1,9 +1,21 @@
-<div>
-  <form>
+<div class="p-shadow-9">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="p-fluid" style="width: 300px; margin: 0 auto">
       <div class="p-field">
         <label for="name">Nome</label>
-        <input id="name" type="text" pInputText />
+        <input id="name" type="text" formControlName="name" pInputText />
+        <div *ngIf="isInvalidControl('name')">
+          <span
+            class="error"
+            *ngIf="this.registerForm.controls['name'].errors!['maxlength']"
+            >Tamaho máximo de 50 caracteres.</span
+          >
+          <span
+            class="error"
+            *ngIf="registerForm.controls['name'].errors!['required']"
+            >Campo obrigatório.</span
+          >
+        </div>
       </div>
       <div class="p-field">
         <label for="measurementUnit">Unidade</label>
@@ -11,31 +23,89 @@
           id="measurementUnit"
           [options]="measurementUnits"
           optionLabel="name"
+          formControlName="measurementUnit"
         ></p-dropdown>
       </div>
       <div class="p-field">
         <label for="quantity">Quantidade</label>
-        <input id="quantity" type="text" pInputText />
+        <div class="p-inputgroup">
+          <input
+            id="quantity"
+            type="text"
+            pInputText
+            formControlName="quantity"
+          />
+          <span class="p-inputgroup-addon">{{ quantityAbreviation }}</span>
+        </div>
       </div>
       <div class="p-field">
         <label for="price">Preço</label>
-        <input id="price" type="text" pInputText />
+        <p-inputMask
+          id="price"
+          formControlName="price"
+          mask="R$ 99,9?99"
+          slotChar=""
+        ></p-inputMask>
       </div>
       <div class="p-field p-d-flex p-flex-row p-ai-center">
-        <label class="p-mr-2">Produto Perecível</label>
-        <p-inputSwitch formControlName="enabled"></p-inputSwitch>
+        <label class="p-mt-2 p-mr-2">Produto Perecível</label>
+        <p-checkbox formControlName="perishable" [binary]="true"></p-checkbox>
       </div>
       <div class="p-field">
         <label for="expirationDate">Data de validade</label>
-        <input id="expirationDate" placeholder="" type="date" pInputText />
+        <p-inputMask
+          id="expirationDate"
+          formControlName="expirationDate"
+          mask="99/99/9999"
+          slotChar=""
+        ></p-inputMask>
+        <div *ngIf="isInvalidControl('expirationDate')">
+          <span
+            class="error"
+            *ngIf="
+              this.registerForm.controls['expirationDate'].errors![
+                'expiredItem'
+              ]
+            "
+            >Produto com data de validade vencida.</span
+          >
+          <span
+            class="error"
+            *ngIf="registerForm.controls['expirationDate'].errors!['required']"
+            >Campo obrigatório.</span
+          >
+        </div>
       </div>
       <div class="p-field">
         <label for="manufacturingDate">Data de fabricação</label>
-        <input id="manufacturingDate" type="date" pInputText />
+        <p-inputMask
+          id="manufacturingDate"
+          formControlName="manufacturingDate"
+          mask="99/99/9999"
+          slotChar=""
+        ></p-inputMask>
+        <div *ngIf="isInvalidControl('manufacturingDate')">
+          <span
+            class="error"
+            *ngIf="
+              this.registerForm.controls['manufacturingDate'].errors![
+                'invalidManufacturingDate'
+              ]
+            "
+            >Data de fabricação inválida.</span
+          >
+          <span
+            class="error"
+            *ngIf="
+              registerForm.controls['manufacturingDate'].errors!['required']
+            "
+            >Campo obrigatório.</span
+          >
+        </div>
       </div>
     </div>
     <div class="p-d-flex" style="width: 300px; margin: 0 auto">
-      <button pButton type="button" class="p-mr-2" label="Salvar"></button>
+      <button pButton type="submit" class="p-mr-2" label="Salvar"></button>
       <button
         pButton
         type="button"

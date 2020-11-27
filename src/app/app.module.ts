@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,9 +14,11 @@ import { BreadcrumbService } from './breadcrumb.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { ItemService } from './item/item.service';
+import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { InputMaskModule } from 'primeng/inputmask';
+
+import { ItemService } from './item/item.service';
 import { RemoveComponent } from './item/remove/remove/remove.component';
 
 @NgModule({
@@ -29,12 +32,14 @@ import { RemoveComponent } from './item/remove/remove/remove.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     MenuModule,
     BreadcrumbModule,
     InputTextModule,
     ButtonModule,
     DropdownModule,
-    InputSwitchModule,
+    CheckboxModule,
+    InputMaskModule,
     TableModule,
   ],
   providers: [BreadcrumbService, ItemService],
