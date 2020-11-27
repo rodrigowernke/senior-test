@@ -21,6 +21,28 @@ export class ItemService {
     this.itemsSubject.next(this.getItems());
   }
 
+  editItem(editedItem: Item) {
+    let items: Item[] = JSON.parse(localStorage.getItem('items') || '{}');
+
+    items = items.map((item) => {
+      if (item.name === editedItem.name) {
+        item.measurementUnit = editedItem.measurementUnit;
+        item.expirationDate = editedItem.expirationDate;
+        item.perishable = editedItem.perishable;
+        item.price = editedItem.price;
+        item.quantity = editedItem.quantity;
+        item.manufacturingDate = editedItem.manufacturingDate;
+
+        return item;
+      }
+      return item;
+    });
+
+    localStorage.setItem('items', JSON.stringify(items));
+
+    this.itemsSubject.next(this.getItems());
+  }
+
   deleteItem(item: Item) {
     let items: Item[] = JSON.parse(localStorage.getItem('items') || '{}');
 

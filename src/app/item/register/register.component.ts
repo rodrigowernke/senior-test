@@ -27,6 +27,8 @@ export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
 
+  editableItem!: Item;
+
   constructor(
     private breadcrumb: BreadcrumbService,
     private router: Router,
@@ -35,7 +37,7 @@ export class RegisterComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
 
     if (navigation && navigation.extras.state) {
-      const item = navigation.extras.state as Item;
+      this.editableItem = navigation.extras.state as Item;
     }
   }
 
@@ -54,27 +56,40 @@ export class RegisterComponent implements OnInit {
 
     // form initialization
     this.registerForm = new FormGroup({
-      name: new FormControl('', [
+      name: new FormControl(this.editableItem ? this.editableItem.name : '', [
         Validators.required,
         Validators.maxLength(50),
       ]),
       measurementUnit: new FormControl(
-        {
-          name: 'Quilograma',
-          measurementUnit: MeasurementUnit.Quilograma,
-        },
+        this.editableItem
+          ? {
+              name: this.editableItem.measurementUnit,
+              measurementUnit:
+                MeasurementUnit[this.editableItem.measurementUnit],
+            }
+          : {
+              name: 'Litro',
+              measurementUnit: MeasurementUnit.Litro,
+            },
         [Validators.required]
       ),
-      quantity: new FormControl(0),
-      price: new FormControl(0),
-      perishable: new FormControl(false, Validators.required),
-      expirationDate: new FormControl('', [
-        this.validatorExpirationDate as ValidatorFn,
-      ]),
-      manufacturingDate: new FormControl('', [
-        Validators.required,
-        this.validatorManufacturingDate,
-      ]),
+      quantity: new FormControl(
+        this.editableItem ? this.editableItem.quantity : '',
+        [this.validatorQuantity as ValidatorFn]
+      ),
+      price: new FormControl(this.editableItem ? this.editableItem.price : ''),
+      perishable: new FormControl(
+        this.editableItem ? this.editableItem.perishable : false,
+        Validators.required
+      ),
+      expirationDate: new FormControl(
+        this.editableItem ? this.editableItem.expirationDate : '',
+        [this.validatorExpirationDate as ValidatorFn]
+      ),
+      manufacturingDate: new FormControl(
+        this.editableItem ? this.editableItem.manufacturingDate : '',
+        [Validators.required, this.validatorManufacturingDate]
+      ),
     });
 
     this.quantityAbreviation = 'kg';
@@ -120,10 +135,21 @@ export class RegisterComponent implements OnInit {
     return false;
   }
 
+  validatorQuantity = (control: FormControl): ValidationErrors => {
+    const quantity = control.value as string;
+    return null!;
+    if (Number(quantity) < 10) {
+      return { expiredItem: true };
+    } else {
+      return null!;
+    }
+  };
+
   validatorExpirationDate = (control: FormControl): ValidationErrors => {
     const expirationDate = control.value as Date;
     const currentDate = new Date();
-    if (currentDate > expirationDate) {
+
+    if (expirationDate < currentDate) {
       return { expiredItem: true };
     } else {
       return null!;
@@ -142,6 +168,8 @@ export class RegisterComponent implements OnInit {
 
       const manufacturingDate = control.value as Date;
 
+      console.log(manufacturingDate > expirationDate);
+
       if (isPerishable && manufacturingDate > expirationDate) {
         return { invalidManufacturingDate: true };
       } else {
@@ -152,6 +180,14 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.status === 'INVALID') {
+      this.registerForm.controls['name'].markAsTouched();
+      this.registerForm.controls['measurementUnit'].markAsTouched();
+      this.registerForm.controls['quantity'].markAsTouched();
+      this.registerForm.controls['price'].markAsTouched();
+      this.registerForm.controls['perishable'].markAsTouched();
+      this.registerForm.controls['expirationDate'].markAsTouched();
+      this.registerForm.controls['manufacturingDate'].markAsTouched();
+
       this.registerForm.controls['name'].updateValueAndValidity();
       this.registerForm.controls['measurementUnit'].updateValueAndValidity();
       this.registerForm.controls['quantity'].updateValueAndValidity();
@@ -159,10 +195,48 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls['perishable'].updateValueAndValidity();
       this.registerForm.controls['expirationDate'].updateValueAndValidity();
       this.registerForm.controls['manufacturingDate'].updateValueAndValidity();
+    } else {
+      const name = this.registerForm.controls['name'].value as string;
+      const measurementUnit =
+        MeasurementUnit[
+          this.registerForm.controls['measurementUnit'].value
+            .measurementUnit as keyof typeof MeasurementUnit
+        ];
+      const quantity = Number(this.registerForm.controls['quantity'].value);
+      const maskedNumber: string = this.registerForm.controls['price'].value;
 
-      console.log('FORM INVALID');
+      let price = 0;
+
+      if (maskedNumber.toString().includes('R$')) {
+        price = Number(maskedNumber.replace('R$', '').trim().replace(',', '.'));
+      } else {
+        price = Number(maskedNumber);
+      }
+
+      const perishable = this.registerForm.controls['perishable'].value;
+      const expirationDate = this.registerForm.controls['expirationDate']
+        .value as Date;
+      const manufacturingDate = this.registerForm.controls['manufacturingDate']
+        .value as Date;
+
+      let item: Item = new Item(
+        name,
+        measurementUnit,
+        quantity,
+        price,
+        perishable,
+        expirationDate,
+        manufacturingDate
+      );
+
+      if (this.editableItem) {
+        this.itemService.editItem(item);
+        console.log('Edited an item!');
+      } else {
+        this.itemService.addItem(item);
+        console.log('Added a new item!');
+      }
     }
-    console.log('Invalid: ', this.isInvalidControl('manufacturingDate'));
   }
 
   cancelForm() {
