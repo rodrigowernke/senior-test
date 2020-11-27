@@ -1,5 +1,5 @@
 <p *ngIf="items.length === 0">Nenhum item adicionado!</p>
-<p-table [value]="items">
+<p-table [value]="items" styleClass="p-datatable-responsive-demo">
   <ng-template pTemplate="header">
     <tr>
       <th>Nome</th>
@@ -15,18 +15,41 @@
   </ng-template>
   <ng-template pTemplate="body" let-item>
     <tr>
-      <td>{{ item.name }}</td>
-      <td>{{ item.measurementUnit }}</td>
-      <td>{{ item.quantity }}</td>
-      <td>{{ item.price | currency }}</td>
-      <td>{{ item.perishable ? "Sim" : "Não" }}</td>
-      <td>{{ item.expirationDate | date: "dd/MM/yyyy" }}</td>
-      <td>{{ item.manufacturingDate | date: "dd/MM/yyyy" }}</td>
       <td>
-        <i class="pi pi-user-edit cursor-pointer" (click)="editItem(item)"></i>
+        <span class="p-column-title">{{ "Nome" }}</span
+        >{{ item.name }}
       </td>
       <td>
-        <i class="pi pi-trash cursor-pointer" (click)="deleteItem(item)"></i>
+        <span class="p-column-title">{{ "Unidade de medida" }}</span
+        >{{ item.measurementUnit }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Quantidade" }}</span
+        >{{ item.quantity }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Preço" }}</span
+        >{{ item.price | currency }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Perecível" }}</span
+        >{{ item.perishable ? "Sim" : "Não" }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Data de validade" }}</span
+        >{{ item.expirationDate | date: "dd/MM/yyyy" }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Data de fabricação" }}</span
+        >{{ item.manufacturingDate | date: "dd/MM/yyyy" }}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Editar" }}</span>
+        <i class="pi pi-user-edit icon" (click)="editItem(item)"></i>
+      </td>
+      <td>
+        <span class="p-column-title">{{ "Deletar" }}</span>
+        <i class="pi pi-trash icon" (click)="deleteItem(item)"></i>
       </td>
     </tr>
   </ng-template>
