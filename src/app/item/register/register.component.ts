@@ -128,7 +128,11 @@ export class RegisterComponent implements OnInit {
         this.editableItem
           ? new Date(this.editableItem.manufacturingDate).toLocaleDateString()
           : '',
-        [Validators.required, this.validatorManufacturingDate]
+        [
+          Validators.required,
+          this.validatorManufacturingDate,
+          this.validatorDate,
+        ]
       ),
     });
 
@@ -191,14 +195,13 @@ export class RegisterComponent implements OnInit {
     } else {
       if (control.value === '') return null!;
 
-      // const currentDate = formatDate(
-      //   new Date(control.value),
-      //   'dd/MM/yyyy',
-      //   'pt-BR'
-      // );
-      const currentDate = new Date(control.value);
+      const currentDate = this.createLocalDate(control.value);
 
-      if (currentDate === null || currentDate === undefined) {
+      if (
+        currentDate === null ||
+        currentDate === undefined ||
+        isNaN(currentDate.getTime())
+      ) {
         return { invalidDate: true };
       } else {
         return null!;

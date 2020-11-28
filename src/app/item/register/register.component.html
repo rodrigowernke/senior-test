@@ -92,6 +92,13 @@
             *ngIf="registerForm.controls['expirationDate'].errors!['required']"
             >Campo obrigatório.</span
           >
+          <span
+            class="error"
+            *ngIf="
+              registerForm.controls['expirationDate'].errors!['invalidDate']
+            "
+            >Data inválida.</span
+          >
         </div>
       </div>
       <div class="p-field">
@@ -119,6 +126,13 @@
               registerForm.controls['manufacturingDate'].errors!['required']
             "
             >Campo obrigatório.</span
+          >
+          <span
+            class="error"
+            *ngIf="
+              registerForm.controls['manufacturingDate'].errors!['invalidDate']
+            "
+            >Data inválida.</span
           >
         </div>
       </div>
