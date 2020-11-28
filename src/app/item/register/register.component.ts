@@ -41,6 +41,33 @@ export class RegisterComponent implements OnInit {
 
     if (navigation && navigation.extras.state) {
       this.editableItem = navigation.extras.state as Item;
+
+      const measurementUnit: any =
+        MeasurementUnit[this.editableItem.measurementUnit];
+
+      switch (measurementUnit) {
+        case MeasurementUnit.Unidade:
+          this.quantityAbreviation = 'un';
+          this.minQuantityDigits = 1;
+          this.maxQuantityDigits = 3;
+
+          break;
+        case MeasurementUnit.Quilograma:
+          this.quantityAbreviation = 'kg';
+          this.minQuantityDigits = 1;
+          this.maxQuantityDigits = 3;
+          break;
+        case MeasurementUnit.Litro:
+          this.quantityAbreviation = 'lt';
+          this.minQuantityDigits = 0;
+          this.maxQuantityDigits = 0;
+          break;
+        default:
+          this.quantityAbreviation = 'un';
+          this.minQuantityDigits = 0;
+          this.maxQuantityDigits = 0;
+          break;
+      }
     }
   }
 
@@ -96,7 +123,9 @@ export class RegisterComponent implements OnInit {
       ),
     });
 
-    this.quantityAbreviation = 'lt';
+    if (this.editableItem === null || this.editableItem === undefined) {
+      this.quantityAbreviation = 'lt';
+    }
 
     // Update the correct unit of measure.
     this.registerForm.controls['measurementUnit'].valueChanges.subscribe(
@@ -148,13 +177,24 @@ export class RegisterComponent implements OnInit {
   }
 
   validatorExpirationDate = (control: FormControl): ValidationErrors => {
-    const expirationDate = control.value as Date;
-    const currentDate = new Date();
-
-    if (expirationDate < currentDate) {
-      return { expiredItem: true };
-    } else {
+    if (this.registerForm === undefined) {
       return null!;
+    } else {
+      const isPerishable = this.registerForm.controls['perishable']
+        .value as boolean;
+
+      if (!isPerishable) {
+        return null!;
+      }
+
+      const expirationDate = control.value as Date;
+      const currentDate = new Date();
+
+      if (expirationDate < currentDate) {
+        return { expiredItem: true };
+      } else {
+        return null!;
+      }
     }
   };
 
