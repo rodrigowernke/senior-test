@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
 import localePt from '@angular/common/locales/pt';
-import { registerLocaleData } from '@angular/common';
+import { CurrencyPipe, registerLocaleData } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,9 +21,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { InputMaskModule } from 'primeng/inputmask';
 import { SidebarModule } from 'primeng/sidebar';
+import { ToastModule } from 'primeng/toast';
 
 import { ItemService } from './item/item.service';
 import { RemoveComponent } from './item/remove/remove/remove.component';
+import { MessageService } from 'primeng/api';
 
 registerLocaleData(localePt, 'pt');
 
@@ -48,12 +50,15 @@ registerLocaleData(localePt, 'pt');
     InputMaskModule,
     TableModule,
     SidebarModule,
+    ToastModule,
   ],
   providers: [
     BreadcrumbService,
     ItemService,
     { provide: LOCALE_ID, useValue: 'pt' },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
+    MessageService,
+    CurrencyPipe,
   ],
   bootstrap: [AppComponent],
 })

@@ -6,6 +6,7 @@ export class Item {
   public perishable: boolean;
   public expirationDate: Date;
   public manufacturingDate: Date;
+  public id: number;
 
   constructor(
     name: string,
@@ -14,7 +15,8 @@ export class Item {
     price: number,
     perishable: boolean,
     expirationDate: Date,
-    manufacturingDate: Date
+    manufacturingDate: Date,
+    id: number
   ) {
     this.name = name;
     this.measurementUnit = measurementUnit;
@@ -23,6 +25,7 @@ export class Item {
     this.perishable = perishable;
     this.expirationDate = expirationDate;
     this.manufacturingDate = manufacturingDate;
+    this.id = id;
   }
 }
 

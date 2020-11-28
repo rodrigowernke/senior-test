@@ -25,7 +25,8 @@ export class ItemService {
     let items: Item[] = JSON.parse(localStorage.getItem('items') || '{}');
 
     items = items.map((item) => {
-      if (item.name === editedItem.name) {
+      if (item.id === editedItem.id) {
+        item.name = editedItem.name;
         item.measurementUnit = editedItem.measurementUnit;
         item.expirationDate = editedItem.expirationDate;
         item.perishable = editedItem.perishable;

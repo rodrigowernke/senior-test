@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -7,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbService } from 'src/app/breadcrumb.service';
 import { ItemService } from '../item.service';
 import { Item, MeasurementUnit } from '../models/item.model';
@@ -31,7 +32,9 @@ export class RegisterComponent implements OnInit {
   constructor(
     private breadcrumb: BreadcrumbService,
     private router: Router,
-    private itemService: ItemService
+    private itemService: ItemService,
+    private messageService: MessageService,
+    private currencyPipe: CurrencyPipe
   ) {
     const navigation = this.router.getCurrentNavigation();
 
@@ -95,27 +98,32 @@ export class RegisterComponent implements OnInit {
 
     this.quantityAbreviation = 'lt';
 
-    this.registerForm.valueChanges.subscribe((change) => {
-      const measurementUnit =
-        MeasurementUnit[
-          change.measurementUnit.name as keyof typeof MeasurementUnit
-        ];
+    // Update the correct unit of measure.
+    this.registerForm.controls['measurementUnit'].valueChanges.subscribe(
+      (change) => {
+        if (change === null) return;
 
-      switch (measurementUnit) {
-        case MeasurementUnit.Litro:
-          this.quantityAbreviation = 'lt';
-          break;
-        case MeasurementUnit.Quilograma:
-          this.quantityAbreviation = 'kg';
-          break;
-        case MeasurementUnit.Unidade:
-          this.quantityAbreviation = 'un';
-          break;
-        default:
-          this.quantityAbreviation = 'un';
-          break;
+        const measurementUnit =
+          MeasurementUnit[
+            change.measurementUnit.name as keyof typeof MeasurementUnit
+          ];
+
+        switch (measurementUnit) {
+          case MeasurementUnit.Litro:
+            this.quantityAbreviation = 'lt';
+            break;
+          case MeasurementUnit.Quilograma:
+            this.quantityAbreviation = 'kg';
+            break;
+          case MeasurementUnit.Unidade:
+            this.quantityAbreviation = 'un';
+            break;
+          default:
+            this.quantityAbreviation = 'un';
+            break;
+        }
       }
-    });
+    );
 
     this.registerForm.controls['expirationDate'].valueChanges.subscribe(() => {
       this.registerForm.controls['manufacturingDate'].updateValueAndValidity();
@@ -137,11 +145,36 @@ export class RegisterComponent implements OnInit {
   }
 
   validatorQuantity = (control: FormControl): ValidationErrors => {
-    const quantity = control.value as string;
-    return null!;
-    if (Number(quantity) < 10) {
-      return { expiredItem: true };
+    if (this.registerForm === undefined) {
+      return null!;
     } else {
+      const quantity = control.value as string;
+
+      const selectedMeasureUnit = this.registerForm.controls['measurementUnit']
+        .value.name;
+
+      let mask: string = '';
+
+      switch (selectedMeasureUnit) {
+        case 'Litro':
+          mask = '^[0-9]*$';
+
+          const matches = selectedMeasureUnit.match(mask);
+          console.log(matches);
+
+          break;
+        case 'Quilograma':
+          mask = '^[0-9]*$';
+
+          break;
+        case 'Unidade':
+          mask = '999999999';
+          break;
+        default:
+          mask = '999999999';
+          break;
+      }
+
       return null!;
     }
   };
@@ -164,14 +197,16 @@ export class RegisterComponent implements OnInit {
       const isPerishable = this.registerForm.controls['perishable']
         .value as boolean;
 
-      const expirationDate = this.registerForm.controls['expirationDate']
-        .value as Date;
+      const expirationDate = new Date(
+        this.registerForm.controls['expirationDate'].value
+      );
 
-      const manufacturingDate = control.value as Date;
+      const manufacturingDate = new Date(control.value);
 
-      console.log(manufacturingDate > expirationDate);
-
-      if (isPerishable && manufacturingDate > expirationDate) {
+      if (
+        isPerishable &&
+        manufacturingDate.getTime() > expirationDate.getTime()
+      ) {
         return { invalidManufacturingDate: true };
       } else {
         return null!;
@@ -205,6 +240,7 @@ export class RegisterComponent implements OnInit {
         ];
       const quantity = Number(this.registerForm.controls['quantity'].value);
       const maskedNumber: string = this.registerForm.controls['price'].value;
+      console.log(maskedNumber);
 
       let price = 0;
 
@@ -220,6 +256,8 @@ export class RegisterComponent implements OnInit {
       const manufacturingDate = this.registerForm.controls['manufacturingDate']
         .value as Date;
 
+      const id = this.editableItem ? this.editableItem.id : Math.random();
+
       let item: Item = new Item(
         name,
         measurementUnit,
@@ -227,20 +265,65 @@ export class RegisterComponent implements OnInit {
         price,
         perishable,
         expirationDate,
-        manufacturingDate
+        manufacturingDate,
+        id
       );
 
       if (this.editableItem) {
         this.itemService.editItem(item);
+        this.showSuccessToast('Edição realizada com sucesso.');
+        this.clearForm();
       } else {
         this.itemService.addItem(item);
+        this.showSuccessToast('Cadastro realizado com sucesso.');
+        this.clearForm();
       }
     }
-
     // debug
   }
 
   cancelForm() {
     this.router.navigate(['/list']);
+  }
+
+  clearForm() {
+    // this.registerForm.markAsPristine();
+    // this.registerForm.markAsUntouched();
+    this.registerForm.reset();
+    this.editableItem = null!;
+  }
+
+  showSuccessToast(message: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Cadastro de Item',
+      detail: message,
+    });
+  }
+
+  quantityMask(): string {
+    const quantity = this.registerForm.controls['quantity'].value as string;
+
+    const selectedMeasureUnit = this.registerForm.controls['measurementUnit']
+      .value.name;
+
+    let mask: string = '';
+
+    switch (selectedMeasureUnit) {
+      case 'Litro':
+        mask = '?999.999';
+        break;
+      case 'Quilograma':
+        mask = '9?.999';
+        break;
+      case 'Unidade':
+        mask = '999999999';
+        break;
+      default:
+        mask = '999999999';
+        break;
+    }
+
+    return mask;
   }
 }
