@@ -1,3 +1,4 @@
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -16,6 +17,7 @@ import { Item, MeasurementUnit } from '../models/item.model';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  providers: [DatePipe],
 })
 export class RegisterComponent implements OnInit {
   breadcrumbItems: MenuItem[] = [];
@@ -114,11 +116,18 @@ export class RegisterComponent implements OnInit {
         [Validators.required]
       ),
       expirationDate: new FormControl(
-        this.editableItem ? this.editableItem.expirationDate : '',
-        [this.validatorExpirationDate as ValidatorFn]
+        this.editableItem
+          ? new Date(this.editableItem.expirationDate).toLocaleDateString()
+          : '',
+        [
+          this.validatorExpirationDate as ValidatorFn,
+          this.validatorDate as ValidatorFn,
+        ]
       ),
       manufacturingDate: new FormControl(
-        this.editableItem ? this.editableItem.manufacturingDate : '',
+        this.editableItem
+          ? new Date(this.editableItem.manufacturingDate).toLocaleDateString()
+          : '',
         [Validators.required, this.validatorManufacturingDate]
       ),
     });
@@ -176,6 +185,27 @@ export class RegisterComponent implements OnInit {
     return false;
   }
 
+  validatorDate = (control: FormControl): ValidationErrors => {
+    if (this.registerForm === undefined) {
+      return null!;
+    } else {
+      if (control.value === '') return null!;
+
+      // const currentDate = formatDate(
+      //   new Date(control.value),
+      //   'dd/MM/yyyy',
+      //   'pt-BR'
+      // );
+      const currentDate = new Date(control.value);
+
+      if (currentDate === null || currentDate === undefined) {
+        return { invalidDate: true };
+      } else {
+        return null!;
+      }
+    }
+  };
+
   validatorExpirationDate = (control: FormControl): ValidationErrors => {
     if (this.registerForm === undefined) {
       return null!;
@@ -187,10 +217,10 @@ export class RegisterComponent implements OnInit {
         return null!;
       }
 
-      const expirationDate = control.value as Date;
+      const expirationDate: Date = this.createLocalDate(control.value);
       const currentDate = new Date();
 
-      if (expirationDate < currentDate) {
+      if (expirationDate > currentDate) {
         return { expiredItem: true };
       } else {
         return null!;
@@ -205,16 +235,13 @@ export class RegisterComponent implements OnInit {
       const isPerishable = this.registerForm.controls['perishable']
         .value as boolean;
 
-      const expirationDate = new Date(
+      const expirationDate = this.createLocalDate(
         this.registerForm.controls['expirationDate'].value
       );
 
-      const manufacturingDate = new Date(control.value);
+      const manufacturingDate = this.createLocalDate(control.value);
 
-      if (
-        isPerishable &&
-        manufacturingDate.getTime() > expirationDate.getTime()
-      ) {
+      if (isPerishable && manufacturingDate > expirationDate) {
         return { invalidManufacturingDate: true };
       } else {
         return null!;
@@ -249,10 +276,12 @@ export class RegisterComponent implements OnInit {
       const quantity = Number(this.registerForm.controls['quantity'].value);
       const price = this.registerForm.controls['price'].value;
       const perishable = this.registerForm.controls['perishable'].value;
-      const expirationDate = this.registerForm.controls['expirationDate']
-        .value as Date;
-      const manufacturingDate = this.registerForm.controls['manufacturingDate']
-        .value as Date;
+      const expirationDate: Date = this.createLocalDate(
+        this.registerForm.controls['expirationDate'].value
+      );
+      const manufacturingDate: Date = this.createLocalDate(
+        this.registerForm.controls['manufacturingDate'].value
+      );
 
       const id = this.editableItem ? this.editableItem.id : Math.random();
 
@@ -297,5 +326,13 @@ export class RegisterComponent implements OnInit {
       summary: 'Cadastro de Item',
       detail: message,
     });
+  }
+
+  createLocalDate(dateString: string): Date {
+    if (dateString === null!) return null!;
+
+    const metadata = dateString.split('/');
+
+    return new Date(`${metadata[1]}-${metadata[0]}-${metadata[2]}`);
   }
 }
