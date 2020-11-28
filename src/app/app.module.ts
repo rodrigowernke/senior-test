@@ -20,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
 
@@ -44,10 +45,11 @@ registerLocaleData(localePt, 'pt');
     MenuModule,
     BreadcrumbModule,
     InputTextModule,
+    InputMaskModule,
+    InputNumberModule,
     ButtonModule,
     DropdownModule,
     CheckboxModule,
-    InputMaskModule,
     TableModule,
     SidebarModule,
     ToastModule,

@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -29,12 +28,14 @@ export class RegisterComponent implements OnInit {
 
   editableItem!: Item;
 
+  minQuantityDigits: number = 1;
+  maxQuantityDigits: number = 3;
+
   constructor(
     private breadcrumb: BreadcrumbService,
     private router: Router,
     private itemService: ItemService,
-    private messageService: MessageService,
-    private currencyPipe: CurrencyPipe
+    private messageService: MessageService
   ) {
     const navigation = this.router.getCurrentNavigation();
 
@@ -107,12 +108,18 @@ export class RegisterComponent implements OnInit {
         switch (measurementUnit) {
           case 'Litro':
             this.quantityAbreviation = 'lt';
+            this.minQuantityDigits = 1;
+            this.maxQuantityDigits = 3;
             break;
           case 'Quilograma':
             this.quantityAbreviation = 'kg';
+            this.minQuantityDigits = 1;
+            this.maxQuantityDigits = 3;
             break;
           case 'Unidade':
             this.quantityAbreviation = 'un';
+            this.minQuantityDigits = 0;
+            this.maxQuantityDigits = 0;
             break;
           default:
             this.quantityAbreviation = 'un';
@@ -200,17 +207,7 @@ export class RegisterComponent implements OnInit {
             .measurementUnit as keyof typeof MeasurementUnit
         ];
       const quantity = Number(this.registerForm.controls['quantity'].value);
-      const maskedNumber: string = this.registerForm.controls['price'].value;
-      console.log(maskedNumber);
-
-      let price = 0;
-
-      if (maskedNumber.toString().includes('R$')) {
-        price = Number(maskedNumber.replace('R$', '').trim().replace(',', '.'));
-      } else {
-        price = Number(maskedNumber);
-      }
-
+      const price = this.registerForm.controls['price'].value;
       const perishable = this.registerForm.controls['perishable'].value;
       const expirationDate = this.registerForm.controls['expirationDate']
         .value as Date;
@@ -260,31 +257,5 @@ export class RegisterComponent implements OnInit {
       summary: 'Cadastro de Item',
       detail: message,
     });
-  }
-
-  quantityMask(): string {
-    const quantity = this.registerForm.controls['quantity'].value as string;
-
-    const selectedMeasureUnit = this.registerForm.controls['measurementUnit']
-      .value.name;
-
-    let mask: string = '';
-
-    switch (selectedMeasureUnit) {
-      case 'Litro':
-        mask = '?999.999';
-        break;
-      case 'Quilograma':
-        mask = '9?.999';
-        break;
-      case 'Unidade':
-        mask = '999999999';
-        break;
-      default:
-        mask = '999999999';
-        break;
-    }
-
-    return mask;
   }
 }

@@ -29,33 +29,26 @@
       <div class="p-field">
         <label for="quantity">Quantidade</label>
         <div class="p-inputgroup">
-          <!-- <input
-            id="quantity"
-            type="text"
-            pInputText
-            formControlName="quantity"
-          /> -->
-          <p-inputMask
+          <p-inputNumber
             id="quantity"
             formControlName="quantity"
-            slotChar=""
-            [mask]="quantityMask()"
-            [autoClear]="false"
-            [unmask]="true"
-          ></p-inputMask>
+            locale="pt-BR"
+            mode="decimal"
+            [minFractionDigits]="minQuantityDigits"
+            [maxFractionDigits]="maxQuantityDigits"
+          ></p-inputNumber>
           <span class="p-inputgroup-addon">{{ quantityAbreviation }}</span>
         </div>
       </div>
       <div class="p-field">
         <label for="price">Preço</label>
-        <p-inputMask
+        <p-inputNumber
           id="price"
           formControlName="price"
-          slotChar=""
-          mask="999999999"
-          [autoClear]="false"
-          [unmask]="true"
-        ></p-inputMask>
+          mode="currency"
+          currency="BRL"
+          locale="pt-BR"
+        ></p-inputNumber>
         <div *ngIf="isInvalidControl('price')">
           <span
             class="error"
