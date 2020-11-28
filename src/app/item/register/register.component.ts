@@ -76,8 +76,7 @@ export class RegisterComponent implements OnInit {
         [Validators.required]
       ),
       quantity: new FormControl(
-        this.editableItem ? this.editableItem.quantity : '',
-        [this.validatorQuantity as ValidatorFn]
+        this.editableItem ? this.editableItem.quantity : ''
       ),
       price: new FormControl(this.editableItem ? this.editableItem.price : '', [
         Validators.required,
@@ -103,19 +102,16 @@ export class RegisterComponent implements OnInit {
       (change) => {
         if (change === null) return;
 
-        const measurementUnit =
-          MeasurementUnit[
-            change.measurementUnit.name as keyof typeof MeasurementUnit
-          ];
+        const measurementUnit = change.name;
 
         switch (measurementUnit) {
-          case MeasurementUnit.Litro:
+          case 'Litro':
             this.quantityAbreviation = 'lt';
             break;
-          case MeasurementUnit.Quilograma:
+          case 'Quilograma':
             this.quantityAbreviation = 'kg';
             break;
-          case MeasurementUnit.Unidade:
+          case 'Unidade':
             this.quantityAbreviation = 'un';
             break;
           default:
@@ -143,41 +139,6 @@ export class RegisterComponent implements OnInit {
     }
     return false;
   }
-
-  validatorQuantity = (control: FormControl): ValidationErrors => {
-    if (this.registerForm === undefined) {
-      return null!;
-    } else {
-      const quantity = control.value as string;
-
-      const selectedMeasureUnit = this.registerForm.controls['measurementUnit']
-        .value.name;
-
-      let mask: string = '';
-
-      switch (selectedMeasureUnit) {
-        case 'Litro':
-          mask = '^[0-9]*$';
-
-          const matches = selectedMeasureUnit.match(mask);
-          console.log(matches);
-
-          break;
-        case 'Quilograma':
-          mask = '^[0-9]*$';
-
-          break;
-        case 'Unidade':
-          mask = '999999999';
-          break;
-        default:
-          mask = '999999999';
-          break;
-      }
-
-      return null!;
-    }
-  };
 
   validatorExpirationDate = (control: FormControl): ValidationErrors => {
     const expirationDate = control.value as Date;

@@ -6,31 +6,33 @@
   border-radius: 0.25rem;
 }
 
-.ng-invalid.ng-touched {
-  border-color: red;
-}
+// .ng-invalid.ng-touched {
+//   border-color: red;
+// }
 
-:host ::ng-deep {
-  .ng-touched.ng-invalid {
-    .p-inputmask.p-inputtext.p-component {
-      border-color: red;
-    }
+// :host ::ng-deep {
+//   .ng-touched.ng-invalid {
+//     border-color: red;
 
-    .p-inputmask.p-inputtext.p-component.p-filled {
-      border-color: #ced4da;
-    }
-  }
+//     .p-inputmask.p-inputtext.p-component.p-filled {
+//       border-color: #ced4da;
+//     }
+//   }
 
-  .ng-untouched.ng-invalid {
-    .p-inputmask.p-inputtext.p-component {
-      border-color: #ced4da !important;
-    }
-  }
+//   .ng-untouched.ng-invalid {
+//     .p-inputmask.p-inputtext.p-component {
+//       border-color: #ced4da !important;
+//     }
+//   }
 
-  .ng-valid {
-    border-color: #ced4da;
-  }
-}
+//   .ng-valid {
+//     border-color: #ced4da !important;
+//   }
+
+//   .ng-valid.ng-dirty {
+//     border-color: #ced4da !important;
+//   }
+// }
 
 .border-error {
   border-color: red;
