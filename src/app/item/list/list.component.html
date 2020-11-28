@@ -63,9 +63,25 @@
     (click)="addItem()"
   ></button>
 </div>
-
-<app-remove
-  [item]="removeItem"
-  (cancelEvent)="hideRemoveModal($event)"
-  *ngIf="showRemoveItemModal && removeItem"
-></app-remove>
+<p-confirmDialog
+  #cd
+  header="Exclusão de item"
+  icon="pi pi-exclamation-triangle"
+>
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="Não"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="Sim"
+      (click)="cd.accept()"
+    ></button> </p-footer
+></p-confirmDialog>
+<p-toast></p-toast>

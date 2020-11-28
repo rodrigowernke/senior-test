@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from 'src/app/breadcrumb.service';
 import { ItemService } from '../item.service';
@@ -16,7 +16,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   items: Item[] = [];
 
-  removeItem!: Item;
   showRemoveItemModal: boolean = false;
 
   private itemsSubscription!: Subscription;
@@ -24,7 +23,9 @@ export class ListComponent implements OnInit, OnDestroy {
   constructor(
     private breadcrumbService: BreadcrumbService,
     private itemService: ItemService,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -45,10 +46,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.itemsSubscription.unsubscribe();
-  }
-
-  hideRemoveModal(showRemoveItemModal: boolean) {
-    this.showRemoveItemModal = showRemoveItemModal;
   }
 
   getQuantityFormat(item: Item) {
@@ -75,8 +72,20 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   deleteItem(item: Item) {
-    this.removeItem = item;
-    this.showRemoveItemModal = true;
+    this.confirmDialog(item);
+  }
+
+  confirmDialog(item: Item) {
+    this.confirmationService.confirm({
+      message: `Você tem certeza que deseja excluir o item ${item.name}?`,
+      accept: () => {
+        this.itemService.deleteItem(item);
+        this.showSuccessToast(
+          'Exclusão de item',
+          `Item ${item.name} excluído com sucesso.`
+        );
+      },
+    });
   }
 
   editItem(item: Item) {
@@ -85,5 +94,13 @@ export class ListComponent implements OnInit, OnDestroy {
 
   addItem() {
     this.router.navigate(['/register']);
+  }
+
+  showSuccessToast(summary: string, message: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: summary,
+      detail: message,
+    });
   }
 }

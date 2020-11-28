@@ -22,16 +22,12 @@ import { BreadcrumbService } from './breadcrumb.service';
 import { ItemService } from './item/item.service';
 import { ListComponent } from './item/list/list.component';
 import { RegisterComponent } from './item/register/register.component';
-import { RemoveComponent } from './item/remove/remove/remove.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 registerLocaleData(localept, 'pt');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent,
-    ListComponent,
-    RemoveComponent,
-  ],
+  declarations: [AppComponent, RegisterComponent, ListComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,6 +44,7 @@ registerLocaleData(localept, 'pt');
     TableModule,
     SidebarModule,
     ToastModule,
+    ConfirmDialogModule,
   ],
   providers: [
     BreadcrumbService,
@@ -56,6 +53,7 @@ registerLocaleData(localept, 'pt');
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
     MessageService,
     CurrencyPipe,
+    ConfirmationService,
   ],
   bootstrap: [AppComponent],
 })
