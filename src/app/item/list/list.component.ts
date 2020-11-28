@@ -82,4 +82,8 @@ export class ListComponent implements OnInit, OnDestroy {
   editItem(item: Item) {
     this.router.navigate(['/register'], { state: item });
   }
+
+  addItem() {
+    this.router.navigate(['/register']);
+  }
 }

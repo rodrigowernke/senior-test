@@ -223,7 +223,7 @@ export class RegisterComponent implements OnInit {
       const expirationDate: Date = this.createLocalDate(control.value);
       const currentDate = new Date();
 
-      if (expirationDate > currentDate) {
+      if (expirationDate < currentDate) {
         return { expiredItem: true };
       } else {
         return null!;

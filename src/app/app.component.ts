@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   breadcrumbItems!: MenuItem[];
   menuItems!: MenuItem[];
   home!: MenuItem;
-  display: boolean = false;
+  sidebarShowing: boolean = false;
 
   constructor(private breadcrumbService: BreadcrumbService) {}
 
@@ -34,5 +34,13 @@ export class AppComponent implements OnInit {
     if (event.item.routerLink === '/') {
       this.breadcrumbItems = [];
     }
+  }
+
+  showSideBar() {
+    this.sidebarShowing = true;
+  }
+
+  hideSideBar() {
+    this.sidebarShowing = false;
   }
 }
