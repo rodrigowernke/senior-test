@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from 'src/app/breadcrumb.service';
 import { ItemService } from '../item.service';
-import { Item } from '../models/item.model';
+import { Item, MeasurementUnit } from '../models/item.model';
 
 @Component({
   selector: 'app-list',
@@ -49,6 +49,29 @@ export class ListComponent implements OnInit, OnDestroy {
 
   hideRemoveModal(showRemoveItemModal: boolean) {
     this.showRemoveItemModal = showRemoveItemModal;
+  }
+
+  getQuantityFormat(item: Item) {
+    let quantityFormat = '';
+
+    const measurementUnit: any = MeasurementUnit[item.measurementUnit];
+
+    switch (measurementUnit) {
+      case MeasurementUnit.Unidade:
+        quantityFormat = 'un';
+        break;
+      case MeasurementUnit.Quilograma:
+        quantityFormat = 'kg';
+        break;
+      case MeasurementUnit.Litro:
+        quantityFormat = 'lt';
+        break;
+      default:
+        quantityFormat = 'lt';
+        break;
+    }
+
+    return quantityFormat;
   }
 
   deleteItem(item: Item) {
