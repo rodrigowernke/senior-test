@@ -1,5 +1,9 @@
 <p *ngIf="items.length === 0">Nenhum item adicionado!</p>
-<p-table [value]="items" styleClass="p-datatable-responsive-demo">
+<p-table
+  [value]="items"
+  styleClass="p-datatable-responsive-demo"
+  *ngIf="items.length > 0"
+>
   <ng-template pTemplate="header">
     <tr>
       <th>Nome</th>
