@@ -145,7 +145,7 @@ export class RegisterComponent implements OnInit {
       (change) => {
         if (change === null) return;
 
-        //this.registerForm.controls['quantity'].setValue(0);
+        this.registerForm.controls['quantity'].setValue(0);
 
         const measurementUnit = change.name;
 
