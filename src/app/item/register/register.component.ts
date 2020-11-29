@@ -77,10 +77,9 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.editableItem)
-      console.log(moment(this.editableItem.expirationDate).format('L'));
-
-    this.breadcrumbItems.push({ label: 'Register' });
+    if (this.editableItem) {
+      this.breadcrumbItems.push({ label: 'Register' });
+    }
 
     setTimeout(() => {
       this.breadcrumb.setBreadcrumb(this.breadcrumbItems);
