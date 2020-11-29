@@ -145,28 +145,32 @@ export class RegisterComponent implements OnInit {
       (change) => {
         if (change === null) return;
 
+        //this.registerForm.controls['quantity'].setValue(0);
+
         const measurementUnit = change.name;
 
         switch (measurementUnit) {
           case 'Litro':
             this.quantityAbreviation = 'lt';
-            this.minQuantityDigits = 1;
             this.maxQuantityDigits = 3;
+            this.minQuantityDigits = 1;
             break;
           case 'Quilograma':
             this.quantityAbreviation = 'kg';
-            this.minQuantityDigits = 1;
             this.maxQuantityDigits = 3;
+            this.minQuantityDigits = 1;
             break;
           case 'Unidade':
             this.quantityAbreviation = 'un';
             this.minQuantityDigits = 0;
-            this.maxQuantityDigits = 0;
             break;
           default:
             this.quantityAbreviation = 'un';
+            this.minQuantityDigits = 0;
             break;
         }
+        console.log(this.minQuantityDigits);
+        console.log(this.maxQuantityDigits);
       }
     );
 
